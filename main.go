@@ -3,8 +3,9 @@ package main
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/alecthomas/kingpin"
+	"gopkg.in/alecthomas/kingpin.v2"
 )
 
 var (
@@ -14,4 +15,13 @@ var (
 func main() {
 	fmt.Println("hello world")
 	fmt.Printf("debug %v", debug)
+
+	nodes, err := GetNodes(".")
+	if err != nil {
+		fmt.Printf("%v", err)
+		os.Exit(1)
+		return
+	}
+
+	fmt.Printf("%v\n", nodes)
 }

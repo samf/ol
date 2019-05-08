@@ -14,7 +14,7 @@ var (
 
 func main() {
 	fmt.Println("hello world")
-	fmt.Printf("debug %v", debug)
+	fmt.Printf("debug %v\n", *debug)
 
 	nodes, err := GetNodes(".")
 	if err != nil {
@@ -23,5 +23,7 @@ func main() {
 		return
 	}
 
-	fmt.Printf("%v\n", nodes)
+	for _, node := range nodes {
+		fmt.Printf("%q\n", node.Path)
+	}
 }

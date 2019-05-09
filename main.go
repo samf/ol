@@ -36,6 +36,6 @@ func main() {
 	}
 
 	for _, node := range nodes {
-		fmt.Println(node)
+		fmt.Println(node.format(opt))
 	}
 }

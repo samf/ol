@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	humanize "github.com/dustin/go-humanize"
 	"github.com/samf/racewalk/v2"
 )
 
@@ -15,8 +16,28 @@ type Node struct {
 	Size   int64
 }
 
-func (node Node) String() string {
-	return fmt.Sprintf("%5d %s", node.Size, node.StatPath)
+func (node Node) format(opt options) string {
+	avail := opt.cols - 1
+	avail -= 6 // size
+
+	path := node.StatPath
+	if len(path) > avail {
+		path = path[:avail]
+	}
+
+	return fmt.Sprintf("%6s %s", node.getSize(opt), path)
+}
+
+func (node Node) getSize(opt options) string {
+	size := uint64(node.Size)
+	if stat := node.GetStat(); stat != nil {
+		realSize := uint64(stat.Blocks) * uint64(stat.Blksize)
+		if realSize < size {
+			size = realSize
+		}
+	}
+
+	return humanize.Bytes(size)
 }
 
 func makeNode(fnode racewalk.FileNode) Node {

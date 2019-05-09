@@ -35,11 +35,11 @@ func TestFilters(t *testing.T) {
 
 		fnode, err := racewalk.MakeFileNode(gitpath)
 		require.NoError(err)
-		assert.True(f(makeNode(*fnode)))
+		assert.True(f(*fnode))
 
 		fnode, err = racewalk.MakeFileNode(mercpath)
 		require.NoError(err)
-		assert.False(f(makeNode(*fnode)))
+		assert.False(f(*fnode))
 	})
 
 	t.Run("noMerc", func(t *testing.T) {
@@ -50,11 +50,11 @@ func TestFilters(t *testing.T) {
 
 		fnode, err := racewalk.MakeFileNode(mercpath)
 		require.NoError(err)
-		assert.True(f(makeNode(*fnode)))
+		assert.True(f(*fnode))
 
 		fnode, err = racewalk.MakeFileNode(gitpath)
 		require.NoError(err)
-		assert.False(f(makeNode(*fnode)))
+		assert.False(f(*fnode))
 	})
 
 	t.Run("chaining", func(t *testing.T) {
@@ -65,14 +65,14 @@ func TestFilters(t *testing.T) {
 
 		fnode, err := racewalk.MakeFileNode(mercpath)
 		require.NoError(err)
-		assert.True(f(makeNode(*fnode)))
+		assert.True(f(*fnode))
 
 		fnode, err = racewalk.MakeFileNode(gitpath)
 		require.NoError(err)
-		assert.True(f(makeNode(*fnode)))
+		assert.True(f(*fnode))
 
 		fnode, err = racewalk.MakeFileNode(otherpath)
 		require.NoError(err)
-		assert.False(f(makeNode(*fnode)))
+		assert.False(f(*fnode))
 	})
 }

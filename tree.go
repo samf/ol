@@ -33,6 +33,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 
 	err := racewalk.Walk(root, rwOpt, func(path string, subdirs,
 		entries []racewalk.FileNode) ([]racewalk.FileNode, error) {
+		var newsubs []racewalk.FileNode
 		parent := makeNode(entries[0])
 		dotdot, ok := dirParents.Load(path)
 		if ok {
@@ -41,6 +42,10 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		nodeChan <- parent
 
 		for _, fnode := range entries[1:] {
+			if opt.filter(fnode) {
+				continue
+			}
+
 			node := makeNode(fnode)
 			node.Parent = &parent
 			nodeChan <- node
@@ -49,9 +54,12 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		for _, dir := range subdirs {
 			subpath := filepath.Join(path, dir.Name())
 			dirParents.LoadOrStore(subpath, &parent)
+			if !opt.filter(dir) {
+				newsubs = append(newsubs, dir)
+			}
 		}
 
-		return subdirs, nil
+		return newsubs, nil
 	})
 	close(nodeChan)
 	if err != nil {

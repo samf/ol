@@ -1,9 +1,15 @@
 package main
 
-type filter func(Node) bool
+import "github.com/samf/racewalk/v2"
+
+type filter func(racewalk.FileNode) bool
+
+func noopFilter(racewalk.FileNode) bool {
+	return false
+}
 
 func (f filter) noGit() filter {
-	return func(n Node) bool {
+	return func(n racewalk.FileNode) bool {
 		switch {
 		case n.Name() == ".git":
 			return true
@@ -16,7 +22,7 @@ func (f filter) noGit() filter {
 }
 
 func (f filter) noHG() filter {
-	return func(n Node) bool {
+	return func(n racewalk.FileNode) bool {
 		switch {
 		case n.Name() == ".hg":
 			return true

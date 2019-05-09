@@ -8,17 +8,27 @@ import (
 	"gopkg.in/alecthomas/kingpin.v2"
 )
 
+type options struct {
+	debug   bool
+	workers int
+}
+
 var (
-	debug = kingpin.Flag("debug", "enable debug mode").Bool()
+	debug   = kingpin.Flag("debug", "enable debug mode").Bool()
+	workers = kingpin.Flag("workers", "number of workers").Short('w').
+		Default("0").Int()
 )
 
 func main() {
-	fmt.Println("hello world")
-	fmt.Printf("debug %v\n", *debug)
+	kingpin.Parse()
+	opt := options{
+		debug:   *debug,
+		workers: *workers,
+	}
 
-	nodes, err := GetNodes(".")
+	nodes, err := GetNodes(".", opt)
 	if err != nil {
-		fmt.Printf("%v", err)
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 		return
 	}

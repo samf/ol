@@ -9,7 +9,7 @@ import (
 )
 
 // GetNodes traverses a tree and returns a slice of Nodes
-func GetNodes(root string) ([]Node, error) {
+func GetNodes(root string, opt options) ([]Node, error) {
 	var (
 		wg   sync.WaitGroup
 		tree sync.Map
@@ -26,12 +26,12 @@ func GetNodes(root string) ([]Node, error) {
 		wg.Done()
 	}()
 
-	opt := &racewalk.Options{
-		NumWorkers: 0,
-		Debug:      true,
+	rwOpt := &racewalk.Options{
+		NumWorkers: opt.workers,
+		Debug:      opt.debug,
 	}
 
-	err := racewalk.Walk(root, opt, func(path string, dirs,
+	err := racewalk.Walk(root, rwOpt, func(path string, dirs,
 		others []racewalk.FileNode) ([]racewalk.FileNode, error) {
 		var parent *Node
 		node := Node{}

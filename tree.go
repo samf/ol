@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"path/filepath"
 	"sync"
 
@@ -20,7 +19,6 @@ func GetNodes(root string, opt options) ([]Node, error) {
 	wg.Add(1)
 	go func() {
 		for node := range nodeChan {
-			fmt.Println(node.StatPath)
 			nodes = append(nodes, node)
 		}
 		wg.Done()

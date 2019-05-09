@@ -36,6 +36,6 @@ func main() {
 	}
 
 	for _, node := range nodes {
-		fmt.Printf("%q\n", node.StatPath)
+		fmt.Println(node)
 	}
 }

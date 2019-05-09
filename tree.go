@@ -31,8 +31,8 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		Debug:      opt.debug,
 	}
 
-	err := racewalk.Walk(root, rwOpt, func(path string, dirs,
-		others []racewalk.FileNode) ([]racewalk.FileNode, error) {
+	err := racewalk.Walk(root, rwOpt, func(path string, subdirs,
+		entries []racewalk.FileNode) ([]racewalk.FileNode, error) {
 		var parent *Node
 		node := Node{}
 		iparent, ok := tree.Load(path)
@@ -40,7 +40,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 			parent = iparent.(*Node)
 		}
 
-		for _, fnode := range append(dirs, others...) {
+		for _, fnode := range entries {
 			path := filepath.Join(path, fnode.Name())
 			node = Node{
 				FileNode: fnode,
@@ -51,7 +51,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 			tree.LoadOrStore(path, &node)
 			nodeChan <- node
 		}
-		return dirs, nil
+		return subdirs, nil
 	})
 	close(nodeChan)
 	if err != nil {

@@ -11,8 +11,8 @@ import (
 // GetNodes traverses a tree and returns a slice of Nodes
 func GetNodes(root string, opt options) ([]Node, error) {
 	var (
-		wg   sync.WaitGroup
-		tree sync.Map
+		dirParents sync.Map
+		wg         sync.WaitGroup
 	)
 	nodes := []Node{}
 	nodeChan := make(chan Node)
@@ -20,7 +20,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 	wg.Add(1)
 	go func() {
 		for node := range nodeChan {
-			fmt.Println(node.Path)
+			fmt.Println(node.StatPath)
 			nodes = append(nodes, node)
 		}
 		wg.Done()
@@ -33,24 +33,24 @@ func GetNodes(root string, opt options) ([]Node, error) {
 
 	err := racewalk.Walk(root, rwOpt, func(path string, subdirs,
 		entries []racewalk.FileNode) ([]racewalk.FileNode, error) {
-		var parent *Node
-		node := Node{}
-		iparent, ok := tree.Load(path)
+		parent := makeNode(entries[0])
+		dotdot, ok := dirParents.Load(path)
 		if ok {
-			parent = iparent.(*Node)
+			parent.Parent = dotdot.(*Node)
 		}
+		nodeChan <- parent
 
-		for _, fnode := range entries {
-			path := filepath.Join(path, fnode.Name())
-			node = Node{
-				FileNode: fnode,
-				Parent:   parent,
-				Path:     path,
-				Size:     fnode.Size(),
-			}
-			tree.LoadOrStore(path, &node)
+		for _, fnode := range entries[1:] {
+			node := makeNode(fnode)
+			node.Parent = &parent
 			nodeChan <- node
 		}
+
+		for _, dir := range subdirs {
+			subpath := filepath.Join(path, dir.Name())
+			dirParents.LoadOrStore(subpath, &parent)
+		}
+
 		return subdirs, nil
 	})
 	close(nodeChan)

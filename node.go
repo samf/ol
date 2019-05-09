@@ -8,6 +8,12 @@ type Node struct {
 	racewalk.FileNode
 
 	Parent *Node
-	Path   string
 	Size   int64
+}
+
+func makeNode(fnode racewalk.FileNode) Node {
+	return Node{
+		FileNode: fnode,
+		Size:     fnode.Size(),
+	}
 }

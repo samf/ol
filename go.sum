@@ -9,8 +9,8 @@ github.com/dustin/go-humanize v1.0.0 h1:VSnTsYCnlFHaM2/igO1h6X3HA71jcobQuxemgkq4
 github.com/dustin/go-humanize v1.0.0/go.mod h1:HtrtbFcZ19U5GC7JDqmcUSB87Iq5E25KnS6fMYU6eOk=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/samf/racewalk/v2 v2.0.0-20190509161620-d3ac179ad0aa h1:iu/h8JCEGxPwIccmLgY0ACF5vd1XxCZKKtc4UQY5lSY=
-github.com/samf/racewalk/v2 v2.0.0-20190509161620-d3ac179ad0aa/go.mod h1:ZIt+qG0jtylPN8Sfln9RCnWQJ7jrq82wKY0Rktg2Ecw=
+github.com/samf/racewalk/v2 v2.0.0-20190523161529-cf0865ac2bd9 h1:jn3aTSIBZlTHeBzaSv0WsvD7m8FZZHzeRm5t7UBhZJM=
+github.com/samf/racewalk/v2 v2.0.0-20190523161529-cf0865ac2bd9/go.mod h1:ZIt+qG0jtylPN8Sfln9RCnWQJ7jrq82wKY0Rktg2Ecw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"time"
 
-	humanize "github.com/dustin/go-humanize"
 	"github.com/samf/racewalk/v2"
+	"github.com/samf/tier"
 )
 
 // Node represents a single file, in the UNIX sense where a file can be a
@@ -40,11 +41,12 @@ func (node Node) getSize(opt options) string {
 		}
 	}
 
-	return humanize.Bytes(size)
+	return tier.Bytes.Make(int64(size)).Short()
 }
 
 func (node Node) getTime(opt options) string {
-	return humanize.Time(node.ModTime())
+	age := time.Since(node.ModTime())
+	return tier.Time.Make(int64(age.Seconds())).Short()
 }
 
 func makeNode(fnode racewalk.FileNode) Node {

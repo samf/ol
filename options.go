@@ -12,10 +12,15 @@ type options struct {
 	workers   int
 	ignoreVCS bool
 
+	sortSize    bool
+	sortMtime   bool
+	sortReverse bool
+
 	rows int
 	cols int
 
 	filter filter
+	sorter sorter
 }
 
 func (opt *options) valid() error {
@@ -23,6 +28,17 @@ func (opt *options) valid() error {
 	opt.filter = noopFilter
 	if opt.ignoreVCS {
 		opt.filter = opt.filter.noGit().noHG()
+	}
+
+	opt.sorter = nameSorter
+	if opt.sortSize {
+		opt.sorter = opt.sorter.bySize()
+	}
+	if opt.sortMtime {
+		opt.sorter = opt.sorter.byMtime()
+	}
+	if opt.sortReverse {
+		opt.sorter = opt.sorter.reverse()
 	}
 
 	// try to get terminal size

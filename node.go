@@ -19,8 +19,8 @@ type Node struct {
 
 func (node Node) format(opt options) string {
 	avail := opt.cols - 1
-	avail -= 6  // size
-	avail -= 17 // when
+	avail -= 5 // size
+	avail -= 5 // when
 
 	when := node.getTime(opt)
 
@@ -29,7 +29,7 @@ func (node Node) format(opt options) string {
 		path = path[:avail]
 	}
 
-	return fmt.Sprintf("%6s %15s %s", node.getSize(opt), when, path)
+	return fmt.Sprintf("%4s %4s %s", node.getSize(opt), when, path)
 }
 
 func (node Node) getSize(opt options) string {

@@ -8,9 +8,9 @@ const (
 )
 
 type options struct {
-	debug     bool
-	workers   int
-	ignoreVCS bool
+	debug   bool
+	workers int
+	vcs     bool
 
 	sortSize    bool
 	sortMtime   bool
@@ -26,7 +26,7 @@ type options struct {
 func (opt *options) valid() error {
 	// deal with filters
 	opt.filter = noopFilter
-	if opt.ignoreVCS {
+	if !opt.vcs {
 		opt.filter = opt.filter.noGit().noHG()
 	}
 

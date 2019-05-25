@@ -13,8 +13,8 @@ var (
 	debug   = kingpin.Flag("debug", "enable debug mode").Bool()
 	workers = kingpin.Flag("workers", "number of workers").Short('w').
 		Default("0").Int()
-	ignoreVCS = kingpin.Flag("ignore-vcs",
-		"ignore VCS directories like .git and .hg").Bool()
+	vcs = kingpin.Flag("vcs",
+		"descend into VCS directories like .git and .hg").Bool()
 
 	sortSize  = kingpin.Flag("size", "sort by size").Short('s').Bool()
 	sortMtime = kingpin.Flag("mtime", "sort by modification time").Short('m').
@@ -27,7 +27,7 @@ func main() {
 	opt := options{
 		debug:       *debug,
 		workers:     *workers,
-		ignoreVCS:   *ignoreVCS,
+		vcs:         *vcs,
 		sortSize:    *sortSize,
 		sortMtime:   *sortMtime,
 		sortReverse: *sortReverse,

@@ -14,10 +14,11 @@ func (s sorter) reverse() sorter {
 
 func (s sorter) bySize() sorter {
 	return func(a, b *Node) bool {
+		// largest first
 		switch {
-		case a.Size < b.Size:
-			return true
 		case a.Size > b.Size:
+			return true
+		case a.Size < b.Size:
 			return false
 		}
 
@@ -28,9 +29,10 @@ func (s sorter) bySize() sorter {
 func (s sorter) byMtime() sorter {
 	return func(a, b *Node) bool {
 		switch {
-		case a.ModTime().Before(b.ModTime()):
-			return true
+		// newest first
 		case a.ModTime().After(b.ModTime()):
+			return true
+		case a.ModTime().Before(b.ModTime()):
 			return false
 		}
 

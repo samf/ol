@@ -8,14 +8,17 @@ func nameSorter(a, b *Node) bool {
 
 func (s sorter) reverse() sorter {
 	return func(a, b *Node) bool {
-		return !s(a, b)
+		return s(b, a)
 	}
 }
 
 func (s sorter) bySize() sorter {
 	return func(a, b *Node) bool {
-		if a.Size < b.Size {
+		switch {
+		case a.Size < b.Size:
 			return true
+		case a.Size > b.Size:
+			return false
 		}
 
 		return s(a, b)
@@ -24,8 +27,11 @@ func (s sorter) bySize() sorter {
 
 func (s sorter) byMtime() sorter {
 	return func(a, b *Node) bool {
-		if a.ModTime().Before(b.ModTime()) {
+		switch {
+		case a.ModTime().Before(b.ModTime()):
 			return true
+		case a.ModTime().After(b.ModTime()):
+			return false
 		}
 
 		return s(a, b)

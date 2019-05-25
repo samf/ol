@@ -37,6 +37,7 @@ func (opt *options) valid() error {
 	if opt.sortMtime {
 		opt.sorter = opt.sorter.byMtime()
 	}
+	// reverse must be applied last!
 	if opt.sortReverse {
 		opt.sorter = opt.sorter.reverse()
 	}

@@ -7,8 +7,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
-github.com/samf/racewalk/v2 v2.0.0-20190523161529-cf0865ac2bd9 h1:jn3aTSIBZlTHeBzaSv0WsvD7m8FZZHzeRm5t7UBhZJM=
-github.com/samf/racewalk/v2 v2.0.0-20190523161529-cf0865ac2bd9/go.mod h1:ZIt+qG0jtylPN8Sfln9RCnWQJ7jrq82wKY0Rktg2Ecw=
+github.com/samf/racewalk/v2 v2.0.0-20190525130533-a983b5a97843 h1:13HotyQ6qwAlGNu1k+Y/29lukSSCRHFNBra7S2JBaP8=
+github.com/samf/racewalk/v2 v2.0.0-20190525130533-a983b5a97843/go.mod h1:ZIt+qG0jtylPN8Sfln9RCnWQJ7jrq82wKY0Rktg2Ecw=
 github.com/samf/tier v0.0.0-20190525035237-961e0d20d582 h1:edu2BGy3Rc4vrEqkpWT/mTy5qJHhJtw5HPKkP3lasKc=
 github.com/samf/tier v0.0.0-20190525035237-961e0d20d582/go.mod h1:frgPREokasy5L1wo12oQaEbrOgsDCP20OUYFo7D+Trc=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

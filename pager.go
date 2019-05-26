@@ -32,6 +32,7 @@ func InstallPager(opt options) (io.WriteCloser, error) {
 	if err != nil {
 		return nil, err
 	}
+	pagerCmd.Start()
 
 	return pager, nil
 }

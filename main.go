@@ -44,11 +44,20 @@ func main() {
 		return
 	}
 
-	sort.SliceStable(nodes, func(i, j int) bool {
+	sort.Slice(nodes, func(i, j int) bool {
 		return opt.sorter(&nodes[i], &nodes[j])
 	})
 
+	out, err := InstallPager(opt)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	if out == nil {
+		out = os.Stderr
+	}
+
 	for _, node := range nodes {
-		fmt.Println(node.format(opt))
+		fmt.Fprintln(out, node.format(opt))
 	}
 }

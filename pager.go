@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"os/exec"
@@ -13,12 +14,10 @@ const (
 	DefaultPager = "less"
 )
 
-// InstallPager returns an io.WriteCloser and an error. If no pager is
-// installed, (nil, nil) will be returned, and os.Stdout should be used.
-// The pager should be Closed().
-func InstallPager(opt options) (io.WriteCloser, error) {
+func pageOut(opt options, nodes []Node) error {
 	if !isatty.IsTerminal(os.Stdout.Fd()) {
-		return nil, nil
+		pageFinish(opt, os.Stdout, nodes)
+		return nil
 	}
 
 	pagerEnv, ok := os.LookupEnv("PAGER")
@@ -30,12 +29,24 @@ func InstallPager(opt options) (io.WriteCloser, error) {
 	pagerCmd.Stdout = os.Stdout
 	pager, err := pagerCmd.StdinPipe()
 	if err != nil {
-		return nil, err
+		pageFinish(opt, os.Stdout, nodes)
+		return err
 	}
 	err = pagerCmd.Start()
 	if err != nil {
-		return nil, err
+		pageFinish(opt, os.Stdout, nodes)
+		return err
 	}
 
-	return pager, nil
+	pageFinish(opt, pager, nodes)
+	pager.Close()
+	return pagerCmd.Wait()
+}
+
+func pageFinish(opt options, out io.Writer, nodes []Node) error {
+	for _, node := range nodes {
+		fmt.Fprintln(out, node.format(opt))
+	}
+
+	return nil
 }

@@ -48,16 +48,8 @@ func main() {
 		return opt.sorter(&nodes[i], &nodes[j])
 	})
 
-	out, err := InstallPager(opt)
+	err = pageOut(opt, nodes)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
-		return
-	}
-	if out == nil {
-		out = os.Stderr
-	}
-
-	for _, node := range nodes {
-		fmt.Fprintln(out, node.format(opt))
 	}
 }

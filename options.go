@@ -10,7 +10,11 @@ const (
 type options struct {
 	debug   bool
 	workers int
+
 	vcs     bool
+	sameGit bool
+	sameHG  bool
+	sameVCS bool
 
 	sortSize    bool
 	sortMtime   bool
@@ -28,6 +32,16 @@ func (opt *options) valid() error {
 	opt.filter = noopFilter
 	if !opt.vcs {
 		opt.filter = opt.filter.noGit().noHG()
+	}
+	if opt.sameVCS {
+		opt.sameGit = true
+		opt.sameHG = true
+	}
+	if opt.sameGit {
+		opt.filter = opt.filter.oneGit()
+	}
+	if opt.sameHG {
+		opt.filter = opt.filter.oneHG()
 	}
 
 	opt.sorter = nameSorter

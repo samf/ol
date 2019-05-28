@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/samf/racewalk/v2"
 	"github.com/stretchr/testify/assert"
@@ -55,6 +57,56 @@ func TestFilters(t *testing.T) {
 		fnode, err = racewalk.MakeFileNode(gitpath)
 		require.NoError(err)
 		assert.False(f(*fnode))
+	})
+
+	t.Run("oneGit", func(t *testing.T) {
+		assert := assert.New(t)
+		require := require.New(t)
+
+		dirname := fmt.Sprintf("git-%v-%v", time.Now().Unix(), os.Getpid())
+		err := os.Mkdir(dirname, 0777)
+		require.NoError(err)
+		defer func() {
+			os.RemoveAll(dirname)
+		}()
+
+		f := initFilter.oneGit()
+
+		fnode, err := racewalk.MakeFileNode(dirname)
+		require.NoError(err)
+		assert.False(f(*fnode))
+
+		err = os.Mkdir(filepath.Join(dirname, ".git"), 0777)
+		require.NoError(err)
+
+		fnode, err = racewalk.MakeFileNode(dirname)
+		require.NoError(err)
+		assert.True(f(*fnode))
+	})
+
+	t.Run("oneMerc", func(t *testing.T) {
+		assert := assert.New(t)
+		require := require.New(t)
+
+		dirname := fmt.Sprintf("hg-%v-%v", time.Now().Unix(), os.Getpid())
+		err := os.Mkdir(dirname, 0777)
+		require.NoError(err)
+		defer func() {
+			os.RemoveAll(dirname)
+		}()
+
+		f := initFilter.oneHG()
+
+		fnode, err := racewalk.MakeFileNode(dirname)
+		require.NoError(err)
+		assert.False(f(*fnode))
+
+		err = os.Mkdir(filepath.Join(dirname, ".hg"), 0777)
+		require.NoError(err)
+
+		fnode, err = racewalk.MakeFileNode(dirname)
+		require.NoError(err)
+		assert.True(f(*fnode))
 	})
 
 	t.Run("chaining", func(t *testing.T) {

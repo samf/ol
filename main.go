@@ -15,6 +15,13 @@ var (
 		Default("0").Int()
 	vcs = kingpin.Flag("vcs",
 		"descend into VCS directories like .git and .hg").Bool()
+	sameGit = kingpin.Flag("same-git", "don't descend into new git repos").
+		Bool()
+	sameHG = kingpin.Flag("same-hg", "don't descend into new mercurial repos").
+		Bool()
+	sameVCS = kingpin.Flag("same-vcs",
+		"don't descend into new repos (same as --same-git and --same-hg)").
+		Bool()
 
 	sortSize  = kingpin.Flag("size", "sort by size").Short('s').Bool()
 	sortMtime = kingpin.Flag("mtime", "sort by modification time").Short('m').
@@ -28,6 +35,9 @@ func main() {
 		debug:       *debug,
 		workers:     *workers,
 		vcs:         *vcs,
+		sameGit:     *sameGit,
+		sameHG:      *sameHG,
+		sameVCS:     *sameVCS,
 		sortSize:    *sortSize,
 		sortMtime:   *sortMtime,
 		sortReverse: *sortReverse,

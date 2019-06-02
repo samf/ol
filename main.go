@@ -2,8 +2,6 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"sort"
 
 	"gopkg.in/alecthomas/kingpin.v2"
@@ -26,10 +24,15 @@ var (
 	sortSize  = kingpin.Flag("size", "sort by size").Short('s').Bool()
 	sortMtime = kingpin.Flag("mtime", "sort by modification time").Short('m').
 			Bool()
-	sortReverse = kingpin.Flag("reverse", "reverse the sort order").Short('r').Bool()
+	sortReverse = kingpin.Flag("reverse", "reverse the sort order").Short('r').
+			Bool()
+
+	dirs = kingpin.Arg("dirs", "dirs to scan").Default(".").Strings()
 )
 
 func main() {
+	var nodes []Node
+
 	kingpin.Parse()
 	opt := options{
 		debug:       *debug,
@@ -42,24 +45,18 @@ func main() {
 		sortMtime:   *sortMtime,
 		sortReverse: *sortReverse,
 	}
-	err := opt.valid()
-	if err != nil {
-		return
-	}
+	opt.valid()
 
-	nodes, err := GetNodes(".", opt)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-		return
+	for _, dir := range opt.dirs {
+		dirnodes, err := GetNodes(dir, opt)
+		kingpin.FatalIfError(err, "traversing %v", dir)
+		nodes = append(nodes, dirnodes...)
 	}
 
 	sort.Slice(nodes, func(i, j int) bool {
 		return opt.sorter(&nodes[i], &nodes[j])
 	})
 
-	err = pageOut(opt, nodes)
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
+	err := pageOut(opt, nodes)
+	kingpin.FatalIfError(err, "paging output")
 }

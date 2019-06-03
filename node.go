@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/samf/racewalk/v2"
@@ -24,7 +25,7 @@ func (node Node) format(opt options) string {
 
 	when := node.getTime(opt)
 
-	path := node.StatPath
+	path := node.getPath(opt)
 	if len(path) > avail {
 		path = path[:avail]
 	}
@@ -87,6 +88,22 @@ func (node Node) getSize(opt options) string {
 func (node Node) getTime(opt options) string {
 	age := time.Since(node.ModTime())
 	return tier.Time.Make(int64(age.Seconds())).Short()
+}
+
+func (node Node) getPath(opt options) string {
+	path := node.StatPath
+
+	switch mode := node.Mode(); {
+	case mode.IsRegular():
+	case mode.IsDir():
+		path += "/"
+	case mode&os.ModeSymlink != 0:
+		path += "@"
+	case mode&os.ModeNamedPipe != 0:
+		path += "|"
+	}
+
+	return path
 }
 
 func makeNode(fnode racewalk.FileNode) Node {

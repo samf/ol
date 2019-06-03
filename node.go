@@ -14,7 +14,7 @@ type Node struct {
 	racewalk.FileNode
 
 	Parent *Node
-	Size   int64
+	Size   *int64
 }
 
 func (node Node) format(opt options) string {
@@ -32,16 +32,56 @@ func (node Node) format(opt options) string {
 	return fmt.Sprintf("%5s %4s %s", node.getSize(opt), when, path)
 }
 
-func (node Node) getSize(opt options) string {
-	size := uint64(node.Size)
-	if stat := node.GetStat(); stat != nil {
-		realSize := uint64(stat.Blocks) * uint64(stat.Blksize)
-		if realSize < size {
-			size = realSize
+func sizeUp(nodes []Node, opt options) {
+	for _, node := range nodes {
+		if node.IsDir() {
+			continue
+		}
+
+		node.fixFileSize()
+	}
+
+	if !opt.dirsize {
+		return
+	}
+
+	for _, node := range nodes {
+		if node.IsDir() {
+			continue
+		}
+
+		if node.Parent != nil {
+			*node.Parent.Size += *node.Size
 		}
 	}
 
-	return tier.Bytes.Make(int64(size)).Short()
+	if !opt.treesize {
+		return
+	}
+
+	for _, node := range nodes {
+		if !node.IsDir() {
+			continue
+		}
+
+		for n := node.Parent; n != nil; n = n.Parent {
+			*n.Size += *node.Size
+		}
+	}
+}
+
+func (node Node) fixFileSize() {
+	size := *node.Size
+	if stat := node.GetStat(); stat != nil {
+		realSize := int64(stat.Blocks) * int64(stat.Blksize)
+		if realSize < size {
+			*node.Size = realSize
+		}
+	}
+}
+
+func (node Node) getSize(opt options) string {
+	return tier.Bytes.Make(*node.Size).Short()
 }
 
 func (node Node) getTime(opt options) string {
@@ -50,8 +90,10 @@ func (node Node) getTime(opt options) string {
 }
 
 func makeNode(fnode racewalk.FileNode) Node {
+	size := new(int64)
+	*size = fnode.Size()
 	return Node{
 		FileNode: fnode,
-		Size:     fnode.Size(),
+		Size:     size,
 	}
 }

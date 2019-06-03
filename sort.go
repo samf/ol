@@ -16,9 +16,9 @@ func (s sorter) bySize() sorter {
 	return func(a, b *Node) bool {
 		// largest first
 		switch {
-		case a.Size > b.Size:
+		case *a.Size > *b.Size:
 			return true
-		case a.Size < b.Size:
+		case *a.Size < *b.Size:
 			return false
 		}
 

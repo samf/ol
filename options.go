@@ -16,6 +16,9 @@ type options struct {
 	debug   bool
 	workers int
 
+	dirsize  bool
+	treesize bool
+
 	vcs     bool
 	sameGit bool
 	sameHG  bool
@@ -47,6 +50,11 @@ func (opt *options) valid() {
 		if !info.IsDir() {
 			kingpin.Fatalf("%v is not a directory", dir)
 		}
+	}
+
+	// treesize implies dirsize
+	if opt.treesize {
+		opt.dirsize = true
 	}
 
 	// deal with filters

@@ -11,6 +11,10 @@ var (
 	debug   = kingpin.Flag("debug", "enable debug mode").Bool()
 	workers = kingpin.Flag("workers", "number of workers").Short('w').
 		Default("0").Int()
+	dirsize = kingpin.Flag("dirsize",
+		"directory size includes directory members' sizes").Bool()
+	treesize = kingpin.Flag("treesize",
+		"directory size includes everything under the directory tree").Bool()
 	vcs = kingpin.Flag("vcs",
 		"descend into VCS directories like .git and .hg").Bool()
 	sameGit = kingpin.Flag("same-git", "don't descend into new git repos").
@@ -37,6 +41,8 @@ func main() {
 	opt := options{
 		debug:       *debug,
 		workers:     *workers,
+		dirsize:     *dirsize,
+		treesize:    *treesize,
 		vcs:         *vcs,
 		sameGit:     *sameGit,
 		sameHG:      *sameHG,
@@ -52,6 +58,8 @@ func main() {
 		kingpin.FatalIfError(err, "traversing %v", dir)
 		nodes = append(nodes, dirnodes...)
 	}
+
+	sizeUp(nodes, opt)
 
 	sort.Slice(nodes, func(i, j int) bool {
 		return opt.sorter(&nodes[i], &nodes[j])

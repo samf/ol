@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"syscall"
 
 	"github.com/samf/racewalk/v2"
 )
@@ -11,6 +12,21 @@ type filter func(racewalk.FileNode) bool
 
 func noopFilter(racewalk.FileNode) bool {
 	return false
+}
+
+func (f filter) sameFS(orig *syscall.Stat_t) filter {
+	return func(n racewalk.FileNode) bool {
+		if stat := n.GetStat(); stat != nil {
+			if orig.Dev != stat.Dev {
+				return true
+			}
+		}
+		if f == nil {
+			return false
+		}
+
+		return f(n)
+	}
 }
 
 func (f filter) noGit() filter {

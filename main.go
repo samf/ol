@@ -17,6 +17,8 @@ var (
 		"directory size includes everything under the directory tree").Bool()
 	vcs = kingpin.Flag("vcs",
 		"descend into VCS directories like .git and .hg").Bool()
+	sameFS = kingpin.Flag("same-fs", "don't cross file system mount points").
+		Short('x').Bool()
 	sameGit = kingpin.Flag("same-git", "don't descend into new git repos").
 		Bool()
 	sameHG = kingpin.Flag("same-hg", "don't descend into new mercurial repos").
@@ -44,6 +46,7 @@ func main() {
 		dirsize:     *dirsize,
 		treesize:    *treesize,
 		vcs:         *vcs,
+		sameFS:      *sameFS,
 		sameGit:     *sameGit,
 		sameHG:      *sameHG,
 		sameVCS:     *sameVCS,

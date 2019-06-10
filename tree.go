@@ -1,8 +1,10 @@
 package main
 
 import (
+	"os"
 	"path/filepath"
 	"sync"
+	"syscall"
 
 	"github.com/samf/racewalk/v2"
 )
@@ -15,6 +17,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 	)
 	nodes := []Node{}
 	nodeChan := make(chan Node)
+	filter := opt.filter
 
 	wg.Add(1)
 	go func() {
@@ -29,6 +32,20 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		Debug:      opt.debug,
 	}
 
+	if opt.sameFS {
+		finfo, err := os.Stat(root)
+		if err != nil {
+			return nil, err
+		}
+
+		if stat := finfo.Sys(); stat != nil {
+			ustat, ok := stat.(*syscall.Stat_t)
+			if ok {
+				filter = filter.sameFS(ustat)
+			}
+		}
+	}
+
 	err := racewalk.Walk(root, rwOpt, func(path string, subdirs,
 		entries []racewalk.FileNode) ([]racewalk.FileNode, error) {
 		var newsubs []racewalk.FileNode
@@ -40,7 +57,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		nodeChan <- parent
 
 		for _, fnode := range entries[1:] {
-			if opt.filter(fnode) {
+			if filter(fnode) {
 				continue
 			}
 
@@ -52,7 +69,7 @@ func GetNodes(root string, opt options) ([]Node, error) {
 		for _, dir := range subdirs {
 			subpath := filepath.Join(path, dir.Name())
 			dirParents.LoadOrStore(subpath, &parent)
-			if !opt.filter(dir) {
+			if !filter(dir) {
 				newsubs = append(newsubs, dir)
 			}
 		}

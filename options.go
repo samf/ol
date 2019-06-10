@@ -20,6 +20,7 @@ type options struct {
 	treesize bool
 
 	vcs     bool
+	sameFS  bool
 	sameGit bool
 	sameHG  bool
 	sameVCS bool
@@ -58,6 +59,8 @@ func (opt *options) valid() {
 	}
 
 	// deal with filters
+	// NB: we don't deal with the sameFS() filter here; it has to be done
+	// just prior to calling racewalk.Walk()
 	opt.filter = noopFilter
 	if !opt.vcs {
 		opt.filter = opt.filter.noGit().noHG()

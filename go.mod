@@ -9,6 +9,6 @@ require (
 	github.com/samf/racewalk/v2 v2.0.0-20190603213153-770ad52a93c6
 	github.com/samf/tier v0.0.0-20190525035237-961e0d20d582
 	github.com/stretchr/testify v1.3.0
-	golang.org/x/sys v0.0.0-20190509141414-a5b02f93d862
+	golang.org/x/sys v0.0.0-20190610200419-93c9922d18ae
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )

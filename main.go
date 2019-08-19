@@ -30,6 +30,9 @@ var (
 	sortSize  = kingpin.Flag("size", "sort by size").Short('s').Bool()
 	sortMtime = kingpin.Flag("mtime", "sort by modification time").Short('m').
 			Bool()
+	sortAtime = kingpin.Flag("atime", "sort by modification time").Short('a').
+			Bool()
+	sortCtime   = kingpin.Flag("ctime", "sort by modification time").Bool()
 	sortReverse = kingpin.Flag("reverse", "reverse the sort order").Short('r').
 			Bool()
 

@@ -27,6 +27,8 @@ type options struct {
 
 	sortSize    bool
 	sortMtime   bool
+	sortAtime   bool
+	sortCtime   bool
 	sortReverse bool
 
 	rows int

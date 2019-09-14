@@ -3,12 +3,12 @@ module github.com/samf/ol
 go 1.12
 
 require (
-	github.com/alecthomas/template v0.0.0-20160405071501-a0175ee3bccc // indirect
-	github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf // indirect
-	github.com/mattn/go-isatty v0.0.8
-	github.com/samf/racewalk/v2 v2.0.0-20190603213153-770ad52a93c6
-	github.com/samf/tier v0.0.0-20190525035237-961e0d20d582
-	github.com/stretchr/testify v1.3.0
-	golang.org/x/sys v0.0.0-20190610200419-93c9922d18ae
+	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751 // indirect
+	github.com/alecthomas/units v0.0.0-20190910110746-680d30ca3117 // indirect
+	github.com/mattn/go-isatty v0.0.9
+	github.com/samf/racewalk/v2 v2.0.0-20190914175059-035c61966ef9
+	github.com/samf/tier v0.0.0-20190914174925-353f56d1e394
+	github.com/stretchr/testify v1.4.0
+	golang.org/x/sys v0.0.0-20190913121621-c3b328c6e5a7
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
 )

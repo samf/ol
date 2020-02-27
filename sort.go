@@ -49,13 +49,13 @@ func (s sorter) byAtime() sorter {
 
 		switch {
 		// newest first
-		case astat.Atimespec.Sec < bstat.Atimespec.Sec:
+		case astat.Atim.Sec < bstat.Atim.Sec:
 			return true
-		case astat.Atimespec.Sec > bstat.Atimespec.Sec:
+		case astat.Atim.Sec > bstat.Atim.Sec:
 			return false
-		case astat.Atimespec.Nsec < bstat.Atimespec.Nsec:
+		case astat.Atim.Nsec < bstat.Atim.Nsec:
 			return true
-		case astat.Atimespec.Nsec > bstat.Atimespec.Nsec:
+		case astat.Atim.Nsec > bstat.Atim.Nsec:
 			return false
 		}
 
@@ -70,13 +70,13 @@ func (s sorter) byCtime() sorter {
 
 		switch {
 		// newest first
-		case astat.Ctimespec.Sec < bstat.Ctimespec.Sec:
+		case astat.Ctim.Sec < bstat.Ctim.Sec:
 			return true
-		case astat.Ctimespec.Sec > bstat.Ctimespec.Sec:
+		case astat.Ctim.Sec > bstat.Ctim.Sec:
 			return false
-		case astat.Ctimespec.Nsec < bstat.Ctimespec.Nsec:
+		case astat.Ctim.Nsec < bstat.Ctim.Nsec:
 			return true
-		case astat.Ctimespec.Nsec > bstat.Ctimespec.Nsec:
+		case astat.Ctim.Nsec > bstat.Ctim.Nsec:
 			return false
 		}
 

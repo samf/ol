@@ -15,12 +15,12 @@ type Walk struct {
 	// Mtime means sort by mtime
 	Mtime bool `kong:"xor='sort',help='recently modified first'"`
 	// Size means to sort by size
-	Size bool `kong:"short='s',xor='sort',help='recently modified first'"`
+	Size bool `kong:"short='s',xor='sort',help='largest first'"`
 	// Reverse reverses the usual sort order
 	Reverse bool `kong:"short='r',help='reverse the sort order'"`
 
 	// Lines gives the maximum number of lines to print
-	Lines  int  `kong:"short='l',xor='lines',help='maximum number of sines to show'"`
+	Lines  int  `kong:"short='l',xor='lines',help='maximum number of lines to show'"`
 	Screen bool `kong:"short='S',xor='lines',help='print enough lines to fill the terminal, then stop'"`
 
 	TimeFixed  bool `kong:"help='display fixed time rather than relative to present'"`
